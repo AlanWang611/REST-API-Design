@@ -1,0 +1,68 @@
+openapi: 3.0.0
+
+info:
+  title: Movie Theater Seat Selection API
+  description: API for selecting open seats for certain shows
+  version: 1.0.0
+
+paths:
+  /seats:
+    get:
+      summary: gets the available seats for the show
+      parameters:
+        - name: showingId
+          in: list
+          required: true
+          description: movie showing ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Showing seats found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: List
+        404:
+          description: Not Found
+          
+    post:
+      summary: Seat Selection for open seat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: object
+      responses:
+        201:
+          description: Seat selected successfully
+        404:
+          description: Showing not found
+        409:
+          description: Seat already selected
+    
+    delete:
+      summary: Remove a seat from the show selection
+      parameters:
+        - name: showingId
+          in: list
+          required: true
+          description: movie ID
+          schema:
+            type: integer
+        - name: seatNumber 
+          in: query
+          required: true
+          description: seat Number
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Seat selection removed
+        404:
+          description: Seat Selection not found
+        409:
+          description: Seat can not be changed
